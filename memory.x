@@ -1,13 +1,13 @@
 MEMORY
 {
   /* NOTE 1 K = 1 KiBi = 1024 bytes */
-  MBR                               : ORIGIN = 0x00000000, LENGTH = 4K
-  SOFTDEVICE                        : ORIGIN = 0x00001000, LENGTH = 96K
-  ACTIVE                            : ORIGIN = 0x00019000, LENGTH = 188K
-  DFU                               : ORIGIN = 0x00048000, LENGTH = 192K /* Needs to be 1 page (4k) bigger than ACTIVE */
-  FLASH                             : ORIGIN = 0x00078000, LENGTH = 24K
-  BOOTLOADER_STATE                  : ORIGIN = 0x0007E000, LENGTH = 4K
-  RAM                         (rwx) : ORIGIN = 0x200024b8, LENGTH = 32K
+  /* NOTE: This memory layout can be squeezed if needed */
+  MBR_SOFTDEVICE                    : ORIGIN = 0x00000000, LENGTH = 152K
+  ACTIVE                            : ORIGIN = 0x00026000, LENGTH = 164K /* Location of the currently active firmware. Firmware always runs from this place. */
+  DFU                               : ORIGIN = 0x0004F000, LENGTH = 168K /* Needs to be 1 page (4k) bigger than ACTIVE. Bootloader will swap the firmware from here into ACTIVE. */
+  FLASH                             : ORIGIN = 0x00079000, LENGTH = 24K  /* In this case, FLASH is where we flash our bootloader. */
+  BOOTLOADER_STATE                  : ORIGIN = 0x0007F000, LENGTH = 4K   /* Where the bootloader stores the current state describing if the active and dfu partitions need to be swapped. */
+  RAM                         (rwx) : ORIGIN = 0x20002cd0, LENGTH = 32K
   uicr_bootloader_start_address (r) : ORIGIN = 0x10001014, LENGTH = 0x4
 }
 
